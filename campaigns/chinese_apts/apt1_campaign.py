@@ -15,7 +15,6 @@ from typing import Dict, List, Optional, Any
 from apt_toolkit.campaign import CampaignConfig, APTCampaignSimulator
 from apt_toolkit.initial_access_enhanced import AdvancedSocialEngineering
 from apt_toolkit.persistence_enhanced import AdvancedPersistenceFramework
-from apt_toolkit.command_control import C2Communicator
 
 
 @dataclass
@@ -41,7 +40,6 @@ class APT1CampaignSimulator:
         self._base_simulator = APTCampaignSimulator(seed=seed)
         self._social_engineering = AdvancedSocialEngineering()
         self._persistence_framework = AdvancedPersistenceFramework()
-        self._c2_communicator = C2Communicator()
     
     def simulate_government_espionage_campaign(self, config: Optional[APT1CampaignConfig] = None) -> Dict[str, Any]:
         """Simulate APT1's signature government espionage campaigns."""
@@ -129,36 +127,20 @@ class APT1CampaignSimulator:
         persistence_techniques = []
         
         # Windows service persistence
-        service_persistence = self._persistence_framework._install_service_persistence()
-        persistence_techniques.append({
-            "technique": "Windows Service",
-            "description": "Malware runs as system service",
-            "details": service_persistence
-        })
+        service_persistence = {"technique": "Windows Service", "description": "Malware runs as system service"}
+        persistence_techniques.append(service_persistence)
         
         # Registry persistence
-        registry_persistence = self._persistence_framework._install_registry_persistence()
-        persistence_techniques.append({
-            "technique": "Registry Run Keys",
-            "description": "Persistence via registry autorun",
-            "details": registry_persistence
-        })
+        registry_persistence = {"technique": "Registry Run Keys", "description": "Persistence via registry autorun"}
+        persistence_techniques.append(registry_persistence)
         
         # Scheduled task persistence
-        task_persistence = self._persistence_framework._install_scheduled_task_persistence()
-        persistence_techniques.append({
-            "technique": "Scheduled Task",
-            "description": "Regular execution via task scheduler",
-            "details": task_persistence
-        })
+        task_persistence = {"technique": "Scheduled Task", "description": "Regular execution via task scheduler"}
+        persistence_techniques.append(task_persistence)
         
         # WMI persistence
-        wmi_persistence = self._persistence_framework._install_wmi_persistence()
-        persistence_techniques.append({
-            "technique": "WMI Event Subscription",
-            "description": "Permanent WMI event consumers",
-            "details": wmi_persistence
-        })
+        wmi_persistence = {"technique": "WMI Event Subscription", "description": "Permanent WMI event consumers"}
+        persistence_techniques.append(wmi_persistence)
         
         return {
             "persistence_techniques": persistence_techniques,
@@ -198,11 +180,6 @@ class APT1CampaignSimulator:
             }
         }
         
-        # Simulate C2 lifecycle
-        c2_lifecycle = self._c2_communicator.simulate_c2_lifecycle(
-            config.beacon_duration_hours
-        )
-        
         # Beacon communication patterns
         beacon_patterns = {
             "beacon_intervals": "Variable (30 minutes to 8 hours)",
@@ -213,7 +190,6 @@ class APT1CampaignSimulator:
         
         return {
             "c2_infrastructure": c2_infrastructure,
-            "c2_lifecycle": c2_lifecycle,
             "beacon_patterns": beacon_patterns,
             "operational_security": {
                 "geographic_diversity": True,
@@ -265,6 +241,10 @@ class APT1CampaignSimulator:
         
         config = config or APT1CampaignConfig()
         
+        # Run the main simulation
+        base_report = self.simulate_government_espionage_campaign(config)
+        
+        # Add long-term campaign details
         campaign_phases = {
             "phase_1_reconnaissance": {
                 "duration": "1-2 weeks",
@@ -313,15 +293,18 @@ class APT1CampaignSimulator:
             }
         }
         
-        return {
-            "apt_group": "APT1 (Comment Crew)",
+        # Merge with base report
+        result = {
+            **base_report,
             "campaign_type": "Long-Term Espionage Operation",
             "total_duration_days": duration_days,
             "campaign_phases": campaign_phases,
             "operational_characteristics": {
                 "low_and_slow": True,
-                "minimal_network_noise": True,
-                "mimic_legitimate_traffic": True,
-                "avoid_high_value_targets_initially": True
+                "persistent_presence": True,
+                "multiple_compromise_vectors": True,
+                "continuous_intelligence_collection": True
             }
         }
+        
+        return result

@@ -1,0 +1,74 @@
+{
+  "report_type": "Red Team Campaign Execution Report",
+  "generated": "2025-11-01T15:57:00.826795",
+  "total_campaigns_executed": 0,
+  "successful_campaigns": 1,
+  "failed_campaigns": 0,
+  "success_rate": "0%",
+  "executions": [],
+  "successful_campaigns_list": [
+    {
+      "campaign": "3d_printing_campaign",
+      "target_set": "defense_aerospace",
+      "timestamp": "2025-11-01T15:57:00.825599",
+      "target_config": {
+        "domains": [
+          "lockheedmartin.com",
+          "northropgrumman.com",
+          "raytheon.com",
+          "boeing.com",
+          "airbus.com",
+          "bae-systems.com",
+          "general-dynamics.com",
+          "l3harris.com",
+          "leidos.com",
+          "saab.com"
+        ],
+        "ips": [
+          "192.168.1.100",
+          "192.168.1.101",
+          "10.0.0.5",
+          "10.0.0.6",
+          "172.16.1.10",
+          "172.16.1.11",
+          "10.10.1.50",
+          "10.10.1.51"
+        ],
+        "ports": [
+          80,
+          443,
+          8080,
+          22,
+          3389,
+          1433,
+          5432,
+          3306
+        ],
+        "services": [
+          "http",
+          "https",
+          "ssh",
+          "vpn",
+          "rdp",
+          "mssql",
+          "postgresql",
+          "mysql"
+        ],
+        "description": "High-value defense and aerospace contractors with classified programs"
+      },
+      "execution": {
+        "status": "dry_run",
+        "message": "Campaign would be executed with validated targets"
+      },
+      "attempts": 1,
+      "final_status": "success"
+    }
+  ],
+  "failed_campaigns_list": [],
+  "summary": {
+    "total_attempts": 0,
+    "average_attempts_per_campaign": 0,
+    "first_successful_campaign": "3d_printing_campaign",
+    "execution_time": "0 minutes (estimated)"
+  }
+}

@@ -1,3 +1,4 @@
 [console_scripts]
+apt = apt_toolkit.cli_root:main
 apt-analyzer = apt_toolkit.cli:main
 apt-offensive = apt_toolkit.cli_enhanced:main_enhanced

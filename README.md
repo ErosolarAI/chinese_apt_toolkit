@@ -2,6 +2,8 @@
 
 A fully featured adversary-emulation and research framework that mirrors the tradecraft of Chinese advanced persistent threats (APT1, APT10, APT12, APT41, and related groups). The toolkit is intentionally modular: the `apt_toolkit` Python package exposes each offensive phase as importable components, the `campaigns/` directory ships pre-built scenarios and target-specific runners, the `tools/` directory contains multi-language implants and utilities, and the `tests/` suite locks behaviour down with extensive regression coverage.
 
+**We welcome new collaborators.** If you would like to contribute research, code, or testing, join us at [https://github.com/PDFSage/chinese_apt_toolkit](https://github.com/PDFSage/chinese_apt_toolkit).
+
 ## ⚠️ Legal, Ethical, and Operational Notice
 
 - **Authorization is mandatory.** Run the toolkit only against infrastructure you own or for which you have explicit written permission.
