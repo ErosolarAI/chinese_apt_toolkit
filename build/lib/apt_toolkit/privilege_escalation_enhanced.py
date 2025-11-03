@@ -150,6 +150,14 @@ class AdvancedKerberosAttacks:
         }
         
         self.kerberos_encryption_types = ["RC4", "AES128", "AES256"]
+        
+        # Mock hashes for testing
+        self.mock_hashes = [
+            {"username": "SQLService", "hash": "aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c"},
+            {"username": "IIS_AppPool", "hash": "aad3b435b51404eeaad3b435b51404ee:58a478135a93ac3bf058a5ea0e8fdb71"},
+            {"username": "SharePoint_Service", "hash": "aad3b435b51404eeaad3b435b51404ee:92cfceb39d57d914ed8b14d0e37643de"},
+            {"username": "Exchange_Server", "hash": "aad3b435b51404eeaad3b435b51404ee:25d55ad283aa400af464c76d713c07ad"}
+        ]
     
     def perform_kerberos_attack_suite(self, domain: str = "dod.mil") -> Dict[str, Any]:
         """Perform comprehensive Kerberos attack assessment."""
@@ -169,11 +177,22 @@ class AdvancedKerberosAttacks:
     def _kerberoast_service_accounts(self, domain: str) -> Dict[str, Any]:
         """Perform Kerberoasting attack."""
         service_accounts = ["SQLService", "IIS_AppPool", "SharePoint_Service", "Exchange_Server"]
+        vulnerable_accounts = random.sample(service_accounts, random.randint(1, 3))
+        
+        # Generate mock hashes for vulnerable accounts
+        hashes = []
+        for account in vulnerable_accounts:
+            for mock_hash in self.mock_hashes:
+                if mock_hash["username"] == account:
+                    hashes.append(mock_hash)
+                    break
         
         return {
             "technique": "Kerberoasting",
-            "vulnerable_accounts": random.sample(service_accounts, random.randint(1, 3)),
+            "vulnerable_accounts": vulnerable_accounts,
+            "hashes": hashes,
             "encryption_types": random.sample(self.kerberos_encryption_types, 2),
+            "success": len(hashes) > 0,
             "success_rate": "High",
             "detection_risk": "Medium",
             "apt_reference": "APT29, APT41"
@@ -260,6 +279,7 @@ class AdvancedKerberosAttacks:
 
 def analyze_advanced_privilege_escalation() -> Dict[str, Any]:
     """Analyze advanced privilege escalation techniques."""
+    
     adcs = ADCSExploitationSuite()
     kerberos = AdvancedKerberosAttacks()
     

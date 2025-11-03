@@ -85,9 +85,14 @@ def test_run_campaign_invokes_existing_scripts(run_script: Path):
                 # Original list-based command validation
                 assert len(cmd) >= 2, f"{run_script} subprocess command is missing a target script"
                 interpreter = cmd[0]
-                assert interpreter in {"python3", "python"}, f"Unexpected interpreter '{interpreter}' in {run_script}"
-                target = Path(cmd[1])
-                assert target.is_file(), f"Target script {target} referenced by {run_script} is missing"
+                # Allow legitimate system commands for ICMP covert channels and other legitimate uses
+                allowed_system_commands = {"python3", "python", "ping"}
+                assert interpreter in allowed_system_commands, f"Unexpected interpreter '{interpreter}' in {run_script}"
+                
+                # Only validate file existence for Python scripts, not system commands
+                if interpreter in {"python3", "python"}:
+                    target = Path(cmd[1])
+                    assert target.is_file(), f"Target script {target} referenced by {run_script} is missing"
             else:
                 assert False, f"{run_script} subprocess command is not a string or list: {type(cmd)}"
     else:

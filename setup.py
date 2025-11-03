@@ -11,7 +11,7 @@ README = (BASE_DIR / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="apt-toolkit",
-    version="3.3.1",
+    version="3.3.2",
     description="Advanced Persistent Threat offensive toolkit for authorized penetration testing",
     author="Security Research Team",
     long_description=README,
@@ -20,12 +20,21 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "rich>=13.7,<14",
+        "click>=8.0.0",
+        "pytest>=7.0.0",
+        "pytest-cov>=4.0.0",
+        "dnspython>=2.0.0",
+        "openai>=1.0.0",
+        "requests>=2.25.0",
+        "cryptography>=3.4.0",
+        "pycryptodome>=3.10.0",
+        "colorama>=0.4.0",
+        "psutil>=5.8.0",
     ],
     entry_points={
         'console_scripts': [
-            'apt=apt_toolkit.cli_root:main',
-            'apt-analyzer=apt_toolkit.cli:main',
-            'apt-offensive=apt_toolkit.cli_enhanced:main_enhanced',
+            'apt-toolkit=apt_toolkit.interactive_shell:main',
+            'apt=apt_toolkit.interactive_shell:main',
         ],
     },
     classifiers=[

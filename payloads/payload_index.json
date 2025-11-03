@@ -1,0 +1,199 @@
+{
+  "payloads_repository": {
+    "version": "1.0.0",
+    "generated_at": "2024-01-15T00:00:00Z",
+    "description": "Comprehensive payload repository for APT toolkit campaigns, tools, and organizations",
+    "structure": {
+      "campaigns": {
+        "financial_institution": [
+          "banking_trojan.py",
+          "wire_transfer_manipulator.py",
+          "account_takeover.py"
+        ],
+        "government_agency": [
+          "document_stealer.py", 
+          "covert_exfiltration.py",
+          "intelligence_gathering.py"
+        ],
+        "healthcare": [
+          "medical_record_harvester.py",
+          "phi_data_exfiltrator.py",
+          "insurance_fraud_generator.py"
+        ],
+        "educational_institution": [
+          "student_data_harvester.py",
+          "research_data_stealer.py",
+          "academic_credential_theft.py"
+        ],
+        "energy_company": [
+          "ics_scada_attack.py",
+          "energy_grid_recon.py",
+          "pipeline_control_takeover.py"
+        ],
+        "defense_contractor": [
+          "classified_document_harvester.py",
+          "weapon_system_recon.py",
+          "supply_chain_attack.py"
+        ],
+        "technology_company": [
+          "source_code_stealer.py",
+          "intellectual_property_theft.py",
+          "zero_day_exploit_generator.py"
+        ]
+      },
+      "tools": {
+        "lightc2": [
+          "implant_generator.py",
+          "basic_implant.py",
+          "persistent_implant.py",
+          "obfuscated_implant.py"
+        ],
+        "powershell": [
+          "reconnaissance.ps1",
+          "persistence.ps1", 
+          "data_exfiltration.ps1",
+          "lateral_movement.ps1"
+        ],
+        "memory_injector": [
+          "process_injection.py",
+          "shellcode_loader.c",
+          "reflective_dll_injection.py"
+        ],
+        "network_scanner": [
+          "port_scanner.py",
+          "vulnerability_scanner.py",
+          "service_detector.py"
+        ],
+        "persistence": [
+          "registry_persistence.py",
+          "scheduled_task_persistence.py",
+          "service_persistence.py"
+        ],
+        "social_engineering": [
+          "credential_harvester.py",
+          "session_hijacker.py",
+          "browser_exploit.py"
+        ]
+      },
+      "organizations": {
+        "google": [
+          "google_oauth_phishing.py",
+          "gmail_harvester.py", 
+          "google_drive_exfiltrator.py"
+        ],
+        "ibm": [
+          "ibm_cloud_attack.py",
+          "mainframe_exploit.py",
+          "watson_ai_data_harvest.py"
+        ],
+        "apple": [
+          "apple_id_phishing.py",
+          "icloud_data_harvester.py",
+          "ios_enterprise_exploit.py"
+        ],
+        "microsoft": [
+          "azure_ad_attack.py",
+          "office365_phishing.py",
+          "active_directory_exploit.py"
+        ],
+        "amazon": [
+          "aws_credential_harvester.py",
+          "s3_bucket_enumeration.py",
+          "amazon_employee_phishing.py"
+        ],
+        "facebook": [
+          "facebook_oauth_attack.py",
+          "social_media_credential_theft.py",
+          "ad_account_takeover.py"
+        ],
+        "stanford_university": [
+          "student_portal_phishing.py",
+          "research_data_harvester.py",
+          "academic_credential_theft.py"
+        ],
+        "new_york_university": [
+          "nyu_login_phishing.py",
+          "library_access_exploit.py",
+          "student_record_harvester.py"
+        ],
+        "federal_bureau_of_investigation": [
+          "fbi_portal_phishing.py",
+          "law_enforcement_data_harvest.py",
+          "investigation_data_compromise.py"
+        ],
+        "us_department_of_state": [
+          "state_department_phishing.py",
+          "diplomatic_cable_harvester.py",
+          "travel_document_exploit.py"
+        ]
+      },
+      "categories": {
+        "phishing": [
+          "email_campaign_generator.py",
+          "credential_harvester.py",
+          "session_hijacker.py"
+        ],
+        "persistence": [
+          "registry_persistence.py",
+          "scheduled_task_persistence.py", 
+          "service_persistence.py"
+        ],
+        "data_exfiltration": [
+          "covert_channel_exfil.py",
+          "dns_tunneling.py",
+          "https_covert_exfil.py"
+        ],
+        "reconnaissance": [
+          "network_scanner.py",
+          "system_info_gatherer.py",
+          "vulnerability_scanner.py"
+        ],
+        "privilege_escalation": [
+          "windows_priv_esc.py",
+          "linux_priv_esc.py",
+          "macos_priv_esc.py"
+        ],
+        "lateral_movement": [
+          "pass_the_hash.py",
+          "wmi_execution.py",
+          "ps_exec.py"
+        ]
+      },
+      "templates": {
+        "email_templates": [
+          "password_reset.json",
+          "invoice_payment.json",
+          "hr_policy_update.json",
+          "system_maintenance.json",
+          "ceo_fraud.json"
+        ],
+        "document_templates": [
+          "malicious_word_doc.py",
+          "pdf_exploit_generator.py",
+          "excel_macro_generator.py"
+        ],
+        "script_templates": [
+          "powershell_template.ps1",
+          "python_template.py",
+          "bash_template.sh"
+        ],
+        "macro_templates": [
+          "word_macro_template.vba",
+          "excel_macro_template.vba",
+          "powerpoint_macro_template.vba"
+        ]
+      }
+    },
+    "generators": [
+      "payload_generator.py",
+      "implant_generator.py",
+      "email_campaign_generator.py"
+    ],
+    "usage_notes": {
+      "authorized_use_only": "All payloads are for authorized security testing and research purposes only.",
+      "legal_compliance": "Ensure proper authorization and legal compliance before using any payloads.",
+      "detection_evasion": "Payloads include various evasion techniques but may be detected by modern security tools.",
+      "customization": "All payloads can be customized for specific target environments and requirements."
+    }
+  }
+}

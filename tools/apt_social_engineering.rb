@@ -243,7 +243,7 @@ if __FILE__ == $0
     puts "\nEXAMPLES:"
     puts "  ruby apt_social_engineering.rb --name 'John Doe' --email john.doe@example.com"
     puts "  ruby apt_social_engineering.rb --email jdoe@company.com --company 'ACME Corp'"
-    exit
+    exit 0
   end
 
   target_info = {}

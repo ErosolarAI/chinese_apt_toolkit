@@ -1,0 +1,9 @@
+{
+  "target_employees_file": "real_employees.txt",
+  "target_domain": "real_company.com",
+  "pass_the_hash_user": "real_admin_user",
+  "pass_the_hash_hash": "real_hash",
+  "c2_server_url": "https://real_c2_server.com/upload",
+  "exfiltration_data_path": "/path/to/real/data.zip",
+  "exfiltration_server_url": "https://real_c2_server.com/upload"
+}

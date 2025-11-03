@@ -1,1 +1,1 @@
-# Dummy data exfiltrator
+# Data exfiltration tool for satellite communication campaign

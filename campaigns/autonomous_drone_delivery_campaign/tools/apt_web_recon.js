@@ -26,17 +26,7 @@ class APTWebRecon {
     }
 
     printBanner() {
-        const banner = `
-    ___  _____ _____   __        ___               _____                      _             
-   / _ \\|  _  |  __ \\ \\ \\      / / |             /  ___|                    | |            
-  / /_\\ \\ | | | |  \\/  \\ \\ /\  / / |_ ___ _ __  \\ \\`--.  ___  __ _ _ __ ___| |_ ___ _ __ 
-  |  _  | | | | | __     \\ V  V / /| __/ _ \\ '__|  \\`--. \\/ _ \\/ _\` | '__/ __| __/ _ \\ '__|
-  | | | \\ \\_/ / |_\\ \\   \\ /\\  / /| ||  __/ |    /\\__/ /  __/ (_| | | | (__| ||  __/ |   
-  \\_| |_/\\___/ \\____/    \\_/ \\_/  \\__\\___|_|    \\____/ \\___|\\__,_|_|  \\___|\\__\\___|_|   
-
-                        Advanced Web Reconnaissance Toolkit
-                   For Educational and Authorized Testing Only
-        `;
+        const banner = `APT Web Reconnaissance Toolkit`;
         console.log(banner);
     }
 

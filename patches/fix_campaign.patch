@@ -1,0 +1,23 @@
+--- apt_toolkit/campaign.py.orig
++++ apt_toolkit/campaign.py
+@@ -336,15 +336,15 @@
+ 
+     def _derive_stolen_hashes(self, privilege_escalation: Dict[str, Any]) -> List[Dict[str, str]]:
+         """Derive stolen hashes from the privilege escalation phase."""
+         hashes = []
+         kerberos_results = privilege_escalation.get("active_directory", {}).get(
+             "kerberos_attacks", {}
+         )
+-        if kerberos_results.get("success"):
+-            for result in kerberos_results.get("results", []):
+-                if result.get("success") and result.get("hashes"):
+-                    hashes.extend(result["hashes"])
++        
++        # Extract hashes from kerberoasting results
++        kerberoasting_results = kerberos_results.get("kerberos_attack_results", {}).get("kerberoasting", {})
++        if kerberoasting_results.get("success") and kerberoasting_results.get("hashes"):
++            hashes.extend(kerberoasting_results["hashes"])
++        
+         return hashes
+ 
+     def _derive_target_hosts(self, network_map: Dict[str, Any]) -> List[str]:

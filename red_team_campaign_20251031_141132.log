@@ -1,4 +1,0 @@
-2025-10-31 14:11:32,435 - __main__ - INFO - Attempt 1/4 for campaign defense_contractor_campaign
-2025-10-31 14:11:32,436 - __main__ - INFO - DRY RUN - Not executing actual campaign
-2025-10-31 14:11:32,436 - __main__ - INFO - Campaign defense_contractor_campaign SUCCESSFUL on attempt 1
-2025-10-31 14:11:32,436 - __main__ - INFO - Comprehensive execution report saved to red_team_campaign_execution_20251031_141132.json

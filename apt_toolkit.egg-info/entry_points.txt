@@ -1,4 +1,3 @@
 [console_scripts]
-apt = apt_toolkit.cli_root:main
-apt-analyzer = apt_toolkit.cli:main
-apt-offensive = apt_toolkit.cli_enhanced:main_enhanced
+apt = apt_toolkit.interactive_shell:main
+apt-toolkit = apt_toolkit.interactive_shell:main

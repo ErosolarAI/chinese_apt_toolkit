@@ -1,7 +1,0 @@
-2025-10-31 14:11:36,792 - __main__ - INFO - Executing 51 campaigns against defense_aerospace until success
-2025-10-31 14:11:36,792 - __main__ - INFO - Running campaign: 3d_printing_campaign
-2025-10-31 14:11:36,792 - __main__ - INFO - Attempt 1/4 for campaign 3d_printing_campaign
-2025-10-31 14:11:36,792 - __main__ - INFO - DRY RUN - Not executing actual campaign
-2025-10-31 14:11:36,792 - __main__ - INFO - Campaign 3d_printing_campaign SUCCESSFUL on attempt 1
-2025-10-31 14:11:36,792 - __main__ - INFO - Success achieved with campaign 3d_printing_campaign!
-2025-10-31 14:11:36,792 - __main__ - INFO - Comprehensive execution report saved to red_team_campaign_execution_20251031_141136.json

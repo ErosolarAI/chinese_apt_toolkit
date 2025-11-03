@@ -90,6 +90,17 @@ Users are solely responsible for ensuring they have proper authorization before 
   python3 apt_persistence.py --help
   ```
 
+#### `sliver_client.py` - LightC2 Agent Generator
+- **Purpose**: Generate configurable agent source artifacts without external Sliver dependencies
+- **Features**:
+  - Uses the bundled LightC2 Nim template for Windows agents
+  - Emits bash tasking loops for Linux targets
+  - Configurable C2 URL, secret key, and sleep interval (`config/lightc2_agent_config.json`)
+- **Usage**:
+  ```bash
+  python3 sliver_client.py  # writes payload metadata and artefacts to payloads/
+  ```
+
 ### Go
 
 #### `apt_network_scanner.go` - APT Network Scanner

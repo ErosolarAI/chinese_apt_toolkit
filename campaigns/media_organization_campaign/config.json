@@ -1,0 +1,9 @@
+{
+  "target_employees_file": "",
+  "target_domain": "",
+  "pass_the_hash_user": "",
+  "pass_the_hash_hash": "",
+  "c2_server_url": "",
+  "exfiltration_data_path": "",
+  "exfiltration_server_url": ""
+}

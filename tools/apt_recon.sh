@@ -15,15 +15,17 @@ NC='\033[0m' # No Color
 
 # Banner
 echo -e "${BLUE}"
-echo "  ___  _____ _____   _____                      _           "
-echo " / _ \|  _  |  __ \ /  __ \                    (_)          "
-echo "/ /_\ \ | | | |  \/ | /  \/ ___  _ __  ___  ___ _  ___  _ __ "
-echo "|  _  | | | | | __  | |    / _ \| '_ \/ __|/ __| |/ _ \| '_ \"
-echo "| | | \ \_/ / |_\ \ | \__/\ (_) | | | \__ \ (__| | (_) | | | |"
-echo "\_| |_/\___/ \____/  \____/\___/|_| |_|___/\___|_|\___/|_| |_|"
-echo ""
-echo "Advanced Persistent Threat Reconnaissance Toolkit"
-echo "For Educational and Authorized Testing Only"
+cat << "EOF"
+  ___  _____ _____   _____                      _           
+ / _ \|  _  |  __ \ /  __ \                    (_)          
+/ /_\ \ | | | |  \/ | /  \/ ___  _ __  ___  ___ _  ___  _ __ 
+|  _  | | | | | __  | |    / _ \| '_ \/ __|/ __| |/ _ \| '_ \
+| | | \ \_/ / |_\ \ | \__/\ (_) | | | \__ \ (__| | (_) | | | |
+\_| |_/\___/ \____/  \____/\___/|_| |_|___/\___|_|\___/|_| |_|
+
+Advanced Persistent Threat Reconnaissance Toolkit
+For Educational and Authorized Testing Only
+EOF
 echo -e "${NC}"
 
 # Configuration

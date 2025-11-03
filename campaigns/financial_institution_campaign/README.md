@@ -221,3 +221,16 @@ Contributions to enhance financial targeting capabilities are welcome, including
 - Improved detection avoidance techniques
 - Integration with real-world financial protocols
 - Advanced money laundering techniques
+## Running a Real Campaign
+
+This campaign can be configured to run against real targets for authorized penetration testing.
+
+To run a real campaign, you will need to create a `config.json` file in this directory. You can use the `config.json.example` file as a template.
+
+Populate the `config.json` file with the actual information for your authorized target.
+
+Once you have configured your target, you can run the campaign using the following command:
+
+```
+python run_campaign.py
+```

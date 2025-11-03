@@ -12,11 +12,12 @@ import tempfile
 from unittest.mock import patch, MagicMock, mock_open
 from pathlib import Path
 
-# Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
-from real_target_campaign_runner import (
-    TargetValidator, 
+from scripts.real_target_campaign_runner import (
+    TargetValidator,
     CampaignExecutor
 )
 
@@ -285,20 +286,32 @@ class TestCampaignExecutor(unittest.TestCase):
 class TestChineseAPTRealTargets(unittest.TestCase):
     """Test Chinese APT campaign execution"""
     
-    @patch('builtins.open', new_callable=mock_open, read_data=json.dumps({
-        'test_targets': {
-            'test': {
-                'domains': ['test.com'],
-                'ips': ['10.0.0.1']
+    def setUp(self):
+        self.temp_targets = tempfile.NamedTemporaryFile(
+            mode='w', 
+            suffix='.json', 
+            delete=False
+        )
+        self.targets_data = {
+            'test_targets': {
+                'test': {
+                    'domains': ['test.com'],
+                    'ips': ['10.0.0.1']
+                }
             }
         }
-    }))
-    def test_load_real_targets(self, mock_file):
+        json.dump(self.targets_data, self.temp_targets)
+        self.temp_targets.close()
+    
+    def tearDown(self):
+        os.unlink(self.temp_targets.name)
+
+    def test_load_real_targets(self):
         """Test loading real targets"""
         from campaigns.chinese_apt_real_targets import RealTargetChineseAPT
         
         runner = RealTargetChineseAPT()
-        targets = runner.load_real_targets()
+        targets = runner.load_real_targets(self.temp_targets.name)
         
         self.assertIn('test', targets)
         self.assertIn('domains', targets['test'])

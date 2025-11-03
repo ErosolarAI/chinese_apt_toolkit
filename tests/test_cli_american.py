@@ -2,9 +2,10 @@ import unittest
 from argparse import Namespace
 from datetime import datetime
 from unittest.mock import patch
+from click.testing import CliRunner
 
 from apt_toolkit.american_targets import analyze_american_targets
-from apt_toolkit.cli import handle_command
+from apt_toolkit.cli_new import apt
 
 
 class AmericanTargetsAnalysisTests(unittest.TestCase):
@@ -34,14 +35,11 @@ class AmericanTargetsAnalysisTests(unittest.TestCase):
             self.assertIn("lure", profile)
 
     def test_handle_command_routes_to_american_targets(self):
-        args = Namespace(module="american", action="targets", json=False)
+        runner = CliRunner()
+        with patch("apt_toolkit.cli_new.analyze_american_targets", return_value={"mock": True}) as mock_analyze:
+            result = runner.invoke(apt, ["american", "targets"])
 
-        with patch(
-            "apt_toolkit.cli.analyze_american_targets", return_value={"mock": True}
-        ) as mock_analyze:
-            result = handle_command(args)
-
-        self.assertEqual(result, {"american_targets": {"mock": True}})
+        self.assertEqual(result.exit_code, 0)
         mock_analyze.assert_called_once_with()
 
 

@@ -1,0 +1,12 @@
+{
+  "organization": "A. O. Smith",
+  "sender_email": "orderaos@hotwater.com",
+  "sender_name": " ",
+  "sender_position": "",
+  "subject": "Security Alert - Password Reset Required",
+  "body": "Dear A. O. Smith Employee,\n\nOur security system has detected unusual activity on your account. To protect your information, we require you to reset your password immediately.\n\nPlease click the link below to reset your password:\n[LINK]\n\nIf you did not request this change, please contact IT support immediately.\n\nSincerely,\n \nIT Security Department\nA. O. Smith\n",
+  "domains": [
+    "hotwater.com"
+  ],
+  "generated_at": "2025-11-03T11:02:43.729729"
+}

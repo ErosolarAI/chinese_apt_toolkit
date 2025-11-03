@@ -1,0 +1,8 @@
+{
+  "implant_id": "implant_20251103110914_57zwzm",
+  "template": "basic_implant",
+  "c2_server": "http://malicious-c2-server.com",
+  "obfuscated": false,
+  "obfuscation_method": null,
+  "generated_at": "2025-11-03T11:09:14.463188"
+}

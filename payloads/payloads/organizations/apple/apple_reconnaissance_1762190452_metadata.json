@@ -1,0 +1,12 @@
+{
+  "organization": "Apple",
+  "campaign_type": "reconnaissance",
+  "evasion_techniques": [
+    "environmental_keying",
+    "lolbin_usage",
+    "polymorphic_code"
+  ],
+  "payload": "# 4jKDHvtQefotQozP5KIE\n# Generated: 2025-11-03T12:20:52.710026\n# System: eXZVGHlHjHiLiXr\n# Process: zfyRwgrrWdB0\n\n\n# System reconnaissance\n$systemInfo = @{\n    Hostname = $env:COMPUTERNAME\n    Domain = $env:USERDOMAIN\n    Username = $env:USERNAME\n    OS = (Get-WmiObject Win32_OperatingSystem).Caption\n    Architecture = (Get-WmiObject Win32_OperatingSystem).OSArchitecture\n    IPAddress = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -eq \"Ethernet\" -or $_.InterfaceAlias -eq \"Wi-Fi\"}).IPAddress\n}\n\n$systemInfo | ConvertTo-Json\n",
+  "generated_at": "2025-11-03T12:20:52.710034",
+  "signature": "ddf8b641c7a5d8cdaef3bdc63b4515050be853b6eb801601565d3951628e2f27"
+}

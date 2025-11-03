@@ -9,12 +9,17 @@ import sys
 import json
 import logging
 import socket
+import subprocess
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Any
 
-# Add parent directory to path for imports
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
+DEFAULT_TARGETS_FILE = PROJECT_ROOT / "config" / "campaign_targets.json"
 
 from campaigns.chinese_apts.chinese_apt_orchestrator import (
     ChineseAPTCampaignOrchestrator, 
@@ -34,13 +39,14 @@ class RealTargetChineseAPT:
         self.orchestrator = ChineseAPTCampaignOrchestrator()
         self.execution_results = []
         
-    def load_real_targets(self, target_file: str = 'campaign_targets.json') -> Dict:
+    def load_real_targets(self, target_file: str = str(DEFAULT_TARGETS_FILE)) -> Dict:
         """Load real target configuration"""
-        if not os.path.exists(target_file):
+        target_path = Path(target_file)
+        if not target_path.exists():
             logger.error(f"Target file {target_file} not found")
             return {}
         
-        with open(target_file, 'r') as f:
+        with target_path.open('r') as f:
             targets = json.load(f)
         
         # Check if production targets are enabled
@@ -80,11 +86,27 @@ class RealTargetChineseAPT:
         recon_results = []
         for domain in target_set.get('domains', []):
             if self.validate_target(domain, 'domain'):
-                recon_results.append({
-                    'target': domain,
-                    'status': 'scanned',
-                    'findings': 'Gaming platform identified, user databases located'
-                })
+                try:
+                    scanner_path = PROJECT_ROOT / "tools" / "apt_network_scanner"
+                    process = subprocess.run(
+                        [str(scanner_path), domain],
+                        capture_output=True,
+                        text=True,
+                        check=True
+                    )
+                    findings = process.stdout.strip()
+                    recon_results.append({
+                        'target': domain,
+                        'status': 'scanned',
+                        'findings': findings
+                    })
+                except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                    logger.error(f"Failed to scan {domain}: {e}")
+                    recon_results.append({
+                        'target': domain,
+                        'status': 'error',
+                        'findings': str(e)
+                    })
         results['phases']['reconnaissance'] = recon_results
         
         # Phase 2: Supply chain targeting

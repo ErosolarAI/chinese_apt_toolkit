@@ -1,0 +1,14 @@
+{
+  "scan_timestamp": "2025-11-02T09:06:48.258717",
+  "search_root": ".",
+  "statistics": {
+    "files_scanned": 15,
+    "designs_found": 0,
+    "high_value_targets": 0,
+    "total_size_mb": 0.0,
+    "total_size_gb": 0.0
+  },
+  "top_targets": [],
+  "all_findings": [],
+  "by_file_type": {}
+}

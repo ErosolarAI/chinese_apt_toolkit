@@ -1,0 +1,38 @@
+--- a/README.md
++++ b/README.md
+@@ -161,6 +161,7 @@ All modules live under `apt_toolkit/` and are importable for custom automation.
+ | `initial_access.py` | `SpearPhishingGenerator` integrates with the email corpus to produce realistic lures; `deliver_payload()` can transmit using stored SMTP profiles. |
+ | `persistence.py` | `PersistenceManager` provisions scheduled tasks, WMI subscriptions, registry keys, and services for sustained access. |
+ | `privilege_escalation.py` / `privilege_escalation_enhanced.py` | AD enumeration, kernel exploit assessment, and escalation landscape modelling. |
++| `organization_manager.py` | Organization discovery, profiling, and attack planning with deepseek-reasoner integration for unique content generation. |
+ | `defense_evasion.py` | Living-off-the-land (LOTL) command generation, log tampering simulations, process hollowing analysis. |
+ | `lateral_movement.py` | Network discovery, Pass-the-Hash operations, credential re-use tracking. |
+ | `command_control.py` | Beaconing lifecycles, transport channel assessments, resilient C2 design. |
+@@ -173,6 +174,7 @@ All modules live under `apt_toolkit/` and are importable for custom automation.
+ | `chinese_apt_campaign` package | Comparative campaign orchestrators for APT1/10/12/41 tradecraft. |
+ | `email_repository.py` | Dataset gateway used by both CLIs and operational scripts. |
+ | `campaign_logging.py` | Shared logging infrastructure for all runners. |
++| `deepseek_integration.py` | Deepseek-reasoner API integration for generating unique phishing emails and organization profiles. |
+ 
+ Each module includes docstrings and descriptive return payloads. Use `python3 -m pydoc apt_toolkit.initial_access` for quick inline documentation.
+ 
+@@ -180,6 +182,19 @@ Each module includes docstrings and descriptive return payloads. Use `python3 -m
+ 
+ ---
+ 
++## Organization Management System
++
++The toolkit now includes an advanced organization management system that leverages the email intelligence corpus and deepseek-reasoner integration:
++
++- **Organization Discovery**: List and search organizations from the email database
++- **Enhanced Profiling**: Generate detailed organization profiles using deepseek-reasoner
++- **Attack Planning**: Create tailored attack plans specific to each organization
++- **Landscape Analysis**: Analyze industry distribution and security postures
++
++See `docs/organization_system.md` for detailed usage instructions and examples.
++
++---
++
+ ## Real-Target Campaign Runner
+ 
+ Script: `scripts/real_target_campaign_runner.py`

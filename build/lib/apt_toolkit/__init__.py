@@ -9,7 +9,7 @@ This toolkit is intended for authorized penetration testing, security research, 
 Unauthorized use is illegal and unethical. Always obtain proper permissions before use.
 """
 
-__version__ = "3.3.1"
+__version__ = "3.3.2"
 __author__ = "Security Research Team"
 
 # Core modules - import functions that actually exist
@@ -21,6 +21,7 @@ from .defense_evasion import DefenseEvader, clear_logs
 from .lateral_movement import LateralMover, pass_the_hash
 from .command_control import start_c2_server, send_beacon
 from .exfiltration import DataExfiltrator, exfiltrate_data
+from .email_repository import EmailRepository, EmailRepositoryError
 
 # Enhanced modules with sophisticated tradecraft
 from .campaign import APTCampaignSimulator, CampaignConfig, simulate_campaign
@@ -39,6 +40,7 @@ from .chinese_apt_campaign import (
     CampaignOrchestrator,
     SystemExploitationEngine
 )
+from .interactive_shell import main as launch_shell
 
 __all__ = [
     # Core modules
@@ -59,7 +61,11 @@ __all__ = [
     "start_c2_server",
     "send_beacon",
     "exfiltrate_data",
-    
+
+    # Email dataset
+    "EmailRepository",
+    "EmailRepositoryError",
+
     # Campaign orchestration
     "CampaignConfig",
     "APTCampaignSimulator",
@@ -80,4 +86,5 @@ __all__ = [
     
     # Analysis functions
     "analyze_american_targets",
+    "launch_shell",
 ]

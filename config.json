@@ -1,0 +1,12 @@
+{
+    "smtp_server": "smtp.example.com",
+    "smtp_port": 587,
+    "smtp_user": "user",
+    "smtp_password": "password",
+    "target_employees_file": "employees.txt",
+    "target_domain": "example.com",
+    "pass_the_hash_user": "admin",
+    "pass_the_hash_hash": "hash",
+    "exfiltration_data_path": "data.zip",
+    "exfiltration_server_url": "https://example.com/upload"
+}

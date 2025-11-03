@@ -1,0 +1,12 @@
+{
+  "organization": "3M Medical",
+  "sender_email": "ahanika@3m.com",
+  "sender_name": " ",
+  "sender_position": "",
+  "subject": "Security Alert - Password Reset Required",
+  "body": "Dear 3M Medical Employee,\n\nOur security system has detected unusual activity on your account. To protect your information, we require you to reset your password immediately.\n\nPlease click the link below to reset your password:\n[LINK]\n\nIf you did not request this change, please contact IT support immediately.\n\nSincerely,\n \nIT Security Department\n3M Medical\n",
+  "domains": [
+    "3m.com"
+  ],
+  "generated_at": "2025-11-03T11:02:43.603209"
+}

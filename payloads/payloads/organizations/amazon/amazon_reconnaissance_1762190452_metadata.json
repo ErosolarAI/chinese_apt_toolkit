@@ -1,0 +1,13 @@
+{
+  "organization": "Amazon",
+  "campaign_type": "reconnaissance",
+  "evasion_techniques": [
+    "api_hashing",
+    "memory_only",
+    "polymorphic_code",
+    "template_injection"
+  ],
+  "payload": "# voMMXS1Ip5rAnxxBv37s\n# Generated: 2025-11-03T12:20:52.710479\n# System: Tu6Kf4fyuzj3ngc\n# Process: 2QZvK0TnnoEN\n\n\n# System reconnaissance\n$systemInfo = @{\n    Hostname = $env:COMPUTERNAME\n    Domain = $env:USERDOMAIN\n    Username = $env:USERNAME\n    OS = (Get-WmiObject Win32_OperatingSystem).Caption\n    Architecture = (Get-WmiObject Win32_OperatingSystem).OSArchitecture\n    IPAddress = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -eq \"Ethernet\" -or $_.InterfaceAlias -eq \"Wi-Fi\"}).IPAddress\n}\n\n$systemInfo | ConvertTo-Json\n",
+  "generated_at": "2025-11-03T12:20:52.710486",
+  "signature": "f80a0f62b933b49c943e83c1232511e4c101cd220951f0e7303f4a741ed0d60d"
+}

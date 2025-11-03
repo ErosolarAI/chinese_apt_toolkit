@@ -27,3 +27,17 @@ This campaign simulates an Advanced Persistent Threat (APT) operation attributed
 ## Toolkit
 
 This campaign utilizes the APT Toolkit, with customized modules for this specific operation. The toolkit provides capabilities for all phases of the attack lifecycle, from initial access to data exfiltration.
+
+## Running a Real Campaign
+
+This campaign can be configured to run against real targets for authorized penetration testing.
+
+To run a real campaign, you will need to create a `config.json` file in this directory. You can use the `config.json.example` file as a template.
+
+Populate the `config.json` file with the actual information for your authorized target.
+
+Once you have configured your target, you can run the campaign using the following command:
+
+```
+python run_campaign.py
+```

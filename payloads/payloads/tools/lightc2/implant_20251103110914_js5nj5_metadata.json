@@ -1,0 +1,8 @@
+{
+  "implant_id": "implant_20251103110914_js5nj5",
+  "template": "persistent_implant",
+  "c2_server": "https://legitimate-cdn.com/api",
+  "obfuscated": true,
+  "obfuscation_method": "base64_encoding",
+  "generated_at": "2025-11-03T11:09:14.463552"
+}

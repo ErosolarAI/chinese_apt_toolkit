@@ -1,0 +1,26 @@
+# Ignore secrets
+config/secrets.json
+config/user_settings.json
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environments
+.env
+.venv
+venv/
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore rehydrated email database
+emails/unique_emails.db
+emails/unique_emails.db.partial

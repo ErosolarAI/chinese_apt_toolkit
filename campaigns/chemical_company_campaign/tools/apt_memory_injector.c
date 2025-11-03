@@ -1,6 +1,6 @@
 /*
  * APT Memory Injector
- * Advanced process injection techniques for APT simulation
+ * Advanced process injection techniques for APT operations
  * For educational and authorized penetration testing only
  * 
  * Compile with: gcc -o apt_memory_injector apt_memory_injector.c -lpsapi

