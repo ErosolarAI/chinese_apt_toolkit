@@ -348,3 +348,48 @@ def analyze_polyglot_payloads() -> Dict[str, Any]:
             "apt28": "Advanced social engineering with weaponized documents"
         }
     }
+
+
+class MaliciousLNKGenerator:
+    """Generates malicious LNK files for initial access."""
+
+    def create_lnk_file(self, payload_command: str) -> Dict[str, Any]:
+        """
+        Creates a malicious LNK file configuration.
+
+        Args:
+            payload_command: The command to be executed by the LNK file.
+
+        Returns:
+            A dictionary representing the LNK file's properties.
+        """
+        return {
+            "file_name": f"document_{random.randint(1000, 9999)}.lnk",
+            "target_path": "C:\\Windows\\System32\\cmd.exe",
+            "arguments": f"/c {payload_command}",
+            "icon_location": "C:\\Windows\\System32\\imageres.dll,2",
+            "description": "Important Document",
+            "success_probability": "Medium"
+        }
+
+
+def create_malicious_lnk(payload: str) -> Dict[str, Any]:
+    """
+    Creates a malicious LNK file as an initial access vector.
+
+    Args:
+        payload: The payload to be executed.
+
+    Returns:
+        A dictionary containing the LNK file details.
+    """
+    generator = MaliciousLNKGenerator()
+    lnk_file = generator.create_lnk_file(payload)
+
+    print(f"[create_malicious_lnk] Created malicious LNK: {lnk_file['file_name']}")
+
+    return {
+        "technique": "Malicious LNK File",
+        "file_details": lnk_file,
+        "delivery_method": "Email attachment or USB drop"
+    }

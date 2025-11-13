@@ -32,6 +32,8 @@ class CampaignConfig:
     include_supply_chain: bool = True
     include_counter_forensics: bool = True
     seed: Optional[int] = None
+    initial_access_technique: str = "spear_phishing_polyglot"
+
 
 
 class APTCampaignSimulator:
@@ -98,28 +100,35 @@ class APTCampaignSimulator:
         from .initial_access_enhanced import (
             AdvancedSocialEngineering,
             PolyglotPayloadEngine,
+            create_malicious_lnk,
         )
 
-        social_engineering = AdvancedSocialEngineering()
-        payload_engine = PolyglotPayloadEngine()
+        if config.initial_access_technique == "malicious_lnk":
+            result = create_malicious_lnk("powershell -e <base64_payload>")
+            result["target_domain"] = config.target_domain
+            result["target_ip"] = config.target_ip
+            result["success"] = True
+        else:  # Default to spear_phishing_polyglot
+            social_engineering = AdvancedSocialEngineering()
+            payload_engine = PolyglotPayloadEngine()
 
-        target_email = f"admin@{config.target_domain}"
-        dossier = social_engineering.build_target_dossier(target_email)
-        lure = social_engineering.create_context_aware_lure(dossier)
-        payload = payload_engine.create_advanced_polyglot(
-            {"target_environment": "windows"}
-        )
+            target_email = f"admin@{config.target_domain}"
+            dossier = social_engineering.build_target_dossier(target_email)
+            lure = social_engineering.create_context_aware_lure(dossier)
+            payload = payload_engine.create_advanced_polyglot(
+                {"target_environment": "windows"}
+            )
 
-        result = {
-            "target_domain": config.target_domain,
-            "target_ip": config.target_ip,
-            "target_email": target_email,
-            "technique": "Advanced Spear-Phishing",
-            "success": True,
-            "dossier": dossier,
-            "lure": lure,
-            "payload": payload,
-        }
+            result = {
+                "target_domain": config.target_domain,
+                "target_ip": config.target_ip,
+                "target_email": target_email,
+                "technique": "Advanced Spear-Phishing",
+                "success": True,
+                "dossier": dossier,
+                "lure": lure,
+                "payload": payload,
+            }
 
         # Add supply chain if enabled
         if config.include_supply_chain:

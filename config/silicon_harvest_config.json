@@ -1,0 +1,17 @@
+{
+    "campaign_name": "Operation Silicon Harvest",
+    "targets": [
+        {
+            "email": "target@example.com",
+            "company": "Example Semiconductor Corp"
+        }
+    ],
+    "c2_server": {
+        "host": "localhost",
+        "port": 8888
+    },
+    "phishing": {
+        "sender_email": "admin@evil.com",
+        "subject": "Urgent: New Cadence software update"
+    }
+}

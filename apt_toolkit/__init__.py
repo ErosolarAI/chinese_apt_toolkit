@@ -15,6 +15,7 @@ __author__ = "Security Research Team"
 # Core modules - import functions that actually exist
 from .american_targets import analyze_american_targets
 from .initial_access import SpearPhishingGenerator, SupplyChainCompromise, phishing_attack
+from .initial_access_non_blocked import NonBlockedInitialAccess, LNKFileAttack, HTMLSmuggling, LivingOffTheLand
 from .persistence import PersistenceManager, add_startup_script
 from .privilege_escalation import PrivilegeEscalator, exploit_kernel_vulnerability
 from .defense_evasion import DefenseEvader, clear_logs
@@ -46,6 +47,7 @@ __all__ = [
     # Core modules
     "SpearPhishingGenerator",
     "SupplyChainCompromise", 
+    "NonBlockedInitialAccess",
     "PersistenceManager",
     "PrivilegeEscalator",
     "DefenseEvader",
@@ -54,6 +56,8 @@ __all__ = [
     
     # Core functions
     "phishing_attack",
+    "LNKFileAttack",
+    "HTMLSmuggling",
     "add_startup_script",
     "exploit_kernel_vulnerability",
     "clear_logs",
@@ -61,6 +65,7 @@ __all__ = [
     "start_c2_server",
     "send_beacon",
     "exfiltrate_data",
+    "LivingOffTheLand",
 
     # Email dataset
     "EmailRepository",

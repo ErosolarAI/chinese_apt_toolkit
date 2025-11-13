@@ -289,3 +289,16 @@ def level_name_to_number(level_name: str) -> Optional[int]:
         "CRITICAL": logging.CRITICAL,
     }
     return mapping.get(level_name.upper())
+
+
+class CampaignLogger:
+    """Simple campaign logger wrapper for enhanced APT operations."""
+    
+    def __init__(self, campaign_name: str = "enhanced_apt_operations"):
+        self.campaign_name = campaign_name
+        self.logger = logging.getLogger(f"apt_operations.{campaign_name}")
+        
+    def log_operation(self, message: str, level: str = "INFO") -> None:
+        """Log an operation with the specified level."""
+        level_method = getattr(self.logger, level.lower(), self.logger.info)
+        level_method(f"[{self.campaign_name}] {message}")

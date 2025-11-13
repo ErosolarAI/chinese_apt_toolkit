@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
+from typing import Dict, Any
 
 def send_phishing_email(sender_email, sender_password, recipient_email, subject, body, attachment_path=None):
     """
@@ -38,3 +39,11 @@ def send_phishing_email(sender_email, sender_password, recipient_email, subject,
         return {"status": "success", "message": f"Phishing email sent to {recipient_email}"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+def deliver_malicious_lnk(lnk_details: Dict[str, Any]):
+    """
+    Simulates the delivery of a malicious LNK file.
+    """
+    print(f"[deliver_malicious_lnk] Delivering malicious LNK file: {lnk_details.get('file_name')}")
+    print(f"[deliver_malicious_lnk] Target command: {lnk_details.get('arguments')}")
+    return {"status": "success", "message": "Malicious LNK delivered."}
